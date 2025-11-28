@@ -4,15 +4,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Просмотр документов</title>
+    <title>Ағылшын тілі – Сборник документов</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
- }
-        button {
-            margin: 5px;
-            padding: 10px 20px;
+        }
+        select, button {
+            padding: 10px;
+            margin: 5px 0;
         }
         iframe {
             width: 100%;
@@ -20,20 +20,76 @@
             border: 1px solid #ccc;
             margin-top: 20px;
         }
+ .doc-list button {
+            display: block;
+            width: 200px;
+            text-align: left;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
-    <h1>Документы для просмотра</h1>
+    <h1>Ағылшын тілі – 5–9 сыныптар</h1>
 
-    <!-- Кнопки для выбора документа -->
-    <button onclick="showDoc('docs/document1.pdf')">Документ 1</button>
-    <button onclick="showDoc('docs/document2.pdf')">Документ 2</button>
-    <button onclick="showDoc('docs/document3.pdf')">Документ 3</button>
+    <!-- Выбор класса -->
+    <label for="classSelect">Сыныпты таңдаңыз:</label>
+    <select id="classSelect" onchange="showDocs(this.value)">
+        <option value="">-- Сынып таңдаңыз --</option>
+        <option value="5">5 сынып</option>
+        <option value="6">6 сынып</option>
+        <option value="7">7 сынып</option>
+        <option value="8">8 сынып</option>
+        <option value="9">9 сынып</option>
+    </select>
 
-    <!-- Окно для отображения документа -->
+    <!-- Список документов -->
+    <div id="docsContainer" class="doc-list"></div>
+
+    <!-- Окно просмотра документа -->
     <iframe id="docViewer" src=""></iframe>
 
     <script>
+        // Документы по классам
+        const docs = {
+            5: [
+{name: "Кітап", url: "docs/5/book.pdf"},
+                {name: "КТП", url: "docs/5/ktp.pdf"},
+                {name: "КМЖ", url: "docs/5/kmj.pdf"}
+            ],
+            6: [
+                {name: "Кітап", url: "docs/6/book.pdf"},
+                {name: "КТП", url: "docs/6/ktp.pdf"},
+                {name: "КМЖ", url: "docs/6/kmj.pdf"}
+            ],
+            7: [
+                {name: "Кітап", url: "docs/7/book.pdf"},
+                {name: "КТП", url: "docs/7/ktp.pdf"},
+                {name: "КМЖ", url: "docs/7/kmj.pdf"}
+            ],
+            8: [
+                {name: "Кітап", url: "docs/8/book.pdf"},
+                {name: "КТП", url: "docs/8/ktp.pdf"},
+                {name: "КМЖ", url: "docs/8/kmj.pdf"}
+            ],
+            9: [
+                {name: "Кітап", url: "docs/9/book.pdf"},
+                {name: "КТП", url: "docs/9/ktp.pdf"},
+                {name: "КМЖ", url: "docs/9/kmj.pdf"}
+            ]
+        };
+
+        function showDocs(classNumber) {
+            const container = document.getElementById('docsContainer');
+            container.innerHTML = "";
+            if (!classNumber) return;
+ docs[classNumber].forEach(doc => {
+                const btn = document.createElement('button');
+                btn.textContent = doc.name;
+                btn.onclick = () => showDoc(doc.url);
+                container.appendChild(btn);
+            });
+        }
+
         function showDoc(url) {
             document.getElementById('docViewer').src = url;
         }
