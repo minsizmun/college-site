@@ -1,2 +1,42 @@
 <h1>college-site</h1>
 <p>Мұнда КТП және ҚМЖ, кітаптар болады</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр документов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+ }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Документы для просмотра</h1>
+
+    <!-- Кнопки для выбора документа -->
+    <button onclick="showDoc('docs/document1.pdf')">Документ 1</button>
+    <button onclick="showDoc('docs/document2.pdf')">Документ 2</button>
+    <button onclick="showDoc('docs/document3.pdf')">Документ 3</button>
+
+    <!-- Окно для отображения документа -->
+    <iframe id="docViewer" src=""></iframe>
+
+    <script>
+        function showDoc(url) {
+            document.getElementById('docViewer').src = url;
+        }
+    </script>
+</body>
+</html>
