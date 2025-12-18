@@ -1,98 +1,529 @@
-<h1>college-site</h1>
-<p>Мұнда КТП және ҚМЖ, кітаптар болады</p>
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="kk">
 <head>
     <meta charset="UTF-8">
-    <title>Ағылшын тілі – Сборник документов</title>
+    <title>College-site – Документы / Құжаттар</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #111827;
+            color: #f9fafb;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+        }
+
+        .lang-btn {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid #374151;
+            background: transparent;
+            color: #e5e7eb;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .lang-btn.active {
+            background: #f9fafb;
+            color: #111827;
+            border-color: #f9fafb;
+            font-weight: 600;
+        }
+
+        main {
+            flex: 1;
             padding: 20px;
+            display: flex;
+            justify-content: center;
         }
-        select, button {
-            padding: 10px;
-            margin: 5px 0;
-        }
-        iframe {
+
+        .layout {
             width: 100%;
-            height: 600px;
-            border: 1px solid #ccc;
-            margin-top: 20px;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 20px;
         }
- .doc-list button {
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .panel {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .panel-title {
+            margin: 0 0 6px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .panel-desc {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        label {
             display: block;
-            width: 200px;
+            font-size: 13px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            outline: none;
+            background: #f9fafb;
+        }
+
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+            background: #ffffff;
+        }
+
+        .doc-list {
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .doc-button {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
             text-align: left;
-            margin-bottom: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+        }
+
+        .doc-button:hover {
+            background: #eef2ff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .doc-button span.label {
+            font-weight: 500;
+        }
+
+        .doc-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .empty-message {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .viewer-panel {
+            display: flex;
+            flex-direction: column;
+            min-height: 380px;
+        }
+
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .viewer-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .viewer-caption {
+            margin: 0;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        iframe {
+          width: 100%;
+          height: calc(100vh - 120px);
+          border-radius: 10px;
+          border: 1px solid #e5e7eb;
+        }
+
+
+        @media (max-width: 600px) {
+            iframe {
+                min-height: 320px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Ағылшын тілі – 5–9 сыныптар</h1>
+<div class="page">
+    <header>
+        <div>
+            <div class="logo" id="siteTitle">College-site</div>
+            <div class="subtitle" id="siteSubtitle">
+                Мұнда КТП және ҚМЖ, кітаптар болады
+            </div>
+        </div>
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="kk">Қазақша</button>
+            <button class="lang-btn" data-lang="ru">Русский</button>
+        </div>
+    </header>
 
-    <!-- Выбор класса -->
-    <label for="classSelect">Сыныпты таңдаңыз:</label>
-    <select id="classSelect" onchange="showDocs(this.value)">
-        <option value="">-- Сынып таңдаңыз --</option>
-        <option value="5">5 сынып</option>
-        <option value="6">6 сынып</option>
-        <option value="7">7 сынып</option>
-        <option value="8">8 сынып</option>
-        <option value="9">9 сынып</option>
-    </select>
+    <main>
+        <div class="layout">
+            <!-- Левая панель: выбор класса и документов -->
+            <section class="panel">
+                <h2 class="panel-title" id="panelClassesTitle">
+                    Ағылшын тілі – 5–9 сыныптар
+                </h2>
+                <p class="panel-desc" id="panelClassesDesc">
+                    Алдымен сыныпты таңдаңыз, содан кейін керекті құжатты ашыңыз.
+                </p>
 
-    <!-- Список документов -->
-    <div id="docsContainer" class="doc-list"></div>
+                <label for="classSelect" id="labelClassSelect">
+                    Сыныпты таңдаңыз:
+                </label>
+                <select id="classSelect">
+                    <option value="" id="optionSelectClass">
+                        -- Сынып таңдаңыз --
+                    </option>
+                    <option value="5">5 сынып</option>
+                    <option value="6">6 сынып</option>
+                    <option value="7">7 сынып</option>
+                    <option value="8">8 сынып</option>
+                    <option value="9">9 сынып</option>
+                </select>
 
-    <!-- Окно просмотра документа -->
-    <iframe id="docViewer" src=""></iframe>
+                <div class="doc-list" id="docsContainer"></div>
+                <div class="empty-message" id="docsEmptyMessage">
+                    Алдымен сыныпты таңдаңыз.
+                </div>
+            </section>
 
-    <script>
-        // Документы по классам
-        const docs = {
-            5: [
-{name: "Кітап", url: "docs/5/book.pdf"},
-                {name: "КТП", url: "docs/5/ktp.pdf"},
-                {name: "КМЖ", url: "docs/5/kmj.pdf"}
-            ],
-            6: [
-                {name: "Кітап", url: "docs/6/book.pdf"},
-                {name: "КТП", url: "docs/6/ktp.pdf"},
-                {name: "КМЖ", url: "docs/6/kmj.pdf"}
-            ],
-            7: [
-                { name: "Кітап", url: "files/7_book.pdf" },
-                { name: "КТП", url: "files/7_ktp.pdf" },
-                { name: "ҚМЖ", url: "files/7_excel_25_26.docx" }
-            ],
-            8: [
-                {name: "Кітап", url: "docs/8/book.pdf"},
-                {name: "КТП", url: "docs/8/ktp.pdf"},
-                {name: "КМЖ", url: "docs/8/kmj.pdf"}
-            ],
-            9: [
-                {name: "Кітап", url: "docs/9/book.pdf"},
-                {name: "КТП", url: "docs/9/ktp.pdf"},
-                {name: "КМЖ", url: "docs/9/kmj.pdf"}
-            ]
-        };
+            <!-- Правая панель: просмотр PDF -->
+            <section class="panel viewer-panel">
+                <div class="viewer-header">
+                    <h2 class="viewer-title" id="viewerTitle">
+                        Құжат терезесі
+                    </h2>
+                    <p class="viewer-caption" id="viewerCaption">
+                        PDF құжаты осында ашылады.
+                    </p>
+                </div>
+                <iframe id="docViewer"></iframe>
+            </section>
+        </div>
+    </main>
+</div>
 
-        function showDocs(classNumber) {
-            const container = document.getElementById('docsContainer');
-            container.innerHTML = "";
-            if (!classNumber) return;
- docs[classNumber].forEach(doc => {
-                const btn = document.createElement('button');
-                btn.textContent = doc.name;
-                btn.onclick = () => showDoc(doc.url);
-                container.appendChild(btn);
+<script>
+    // Тек PDF, структура папок:
+    // docs/5/book.pdf, docs/5/ktp.pdf, docs/5/kmj.pdf и т.д.
+    const docs = {
+        5: [
+            {
+                key: "book",
+                names: { kk: "Кітап", ru: "Книга" },
+                url: "docs/5/book.pdf"
+            },
+            {
+                key: "ktp",
+                names: { kk: "КТП", ru: "КТП (календарь)" },
+                url: "docs/5/ktp.pdf"
+            },
+            {
+                key: "kmj",
+                names: { kk: "ҚМЖ", ru: "КМЖ (поурочные планы)" },
+                url: "docs/5/kmj.pdf"
+            },
+            {
+                key: "bjb",
+                names: { kk: "БЖБ/ТЖБ", ru: "БЖБ/ТЖБ (СОР/СОЧ)" },
+                url: "docs/5/ktp.pdf"
+            }
+
+        ],
+        6: [
+            {
+                key: "book",
+                names: { kk: "Кітап", ru: "Книга" },
+                url: "docs/6/book.pdf"
+            },
+            {
+                key: "ktp",
+                names: { kk: "КТП", ru: "КТП (календарь)" },
+                url: "docs/6/ktp.pdf"
+            },
+            {
+                key: "kmj",
+                names: { kk: "ҚМЖ", ru: "КМЖ (поурочные планы)" },
+                url: "docs/6/kmj.pdf"
+            }
+        ],
+        7: [
+            {
+                key: "book",
+                names: { kk: "Кітап", ru: "Книга" },
+                url: "docs/7/book.pdf"
+            },
+            {
+                key: "ktp",
+                names: { kk: "КТП", ru: "КТП (календарь)" },
+                url: "docs/7/ktp.pdf"
+            },
+            {
+                key: "kmj",
+                names: { kk: "ҚМЖ", ru: "КМЖ (поурочные планы)" },
+                url: "docs/7/kmj.pdf"
+            }
+        ],
+        8: [
+            {
+                key: "book",
+                names: { kk: "Кітап", ru: "Книга" },
+                url: "docs/8/book.pdf"
+            },
+            {
+                key: "ktp",
+                names: { kk: "КТП", ru: "КТП (календарь)" },
+                url: "docs/8/ktp.pdf"
+            },
+            {
+                key: "kmj",
+                names: { kk: "ҚМЖ", ru: "КМЖ (поурочные планы)" },
+                url: "docs/8/kmj.pdf"
+            }
+        ],
+        9: [
+            {
+                key: "book",
+                names: { kk: "Кітап", ru: "Книга" },
+                url: "docs/9/book.pdf"
+            },
+            {
+                key: "ktp",
+                names: { kk: "КТП", ru: "КТП (календарь)" },
+                url: "docs/9/ktp.pdf"
+            },
+            {
+                key: "kmj",
+                names: { kk: "ҚМЖ", ru: "КМЖ (поурочные планы)" },
+                url: "docs/9/kmj.pdf"
+            }
+        ]
+    };
+
+    // Тексты для двух языков
+    const i18n = {
+        kk: {
+            siteTitle: "College-site",
+            siteSubtitle: "Мұнда КТП және ҚМЖ, кітаптар болады",
+            panelClassesTitle: "Ағылшын тілі – 5–9 сыныптар",
+            panelClassesDesc: "Алдымен сыныпты таңдаңыз, содан кейін керекті құжатты ашыңыз.",
+            labelClassSelect: "Сыныпты таңдаңыз:",
+            optionSelectClass: "-- Сынып таңдаңыз --",
+            docsEmptyInitial: "Алдымен сыныпты таңдаңыз.",
+            docsEmptyNoDocs: "Бұл сынып үшін құжаттар табылмады.",
+            viewerTitle: "Құжат терезесі",
+            viewerCaption: "PDF құжаты осында ашылады.",
+            badgePdf: "PDF құжат"
+        },
+        ru: {
+            siteTitle: "College-site",
+            siteSubtitle: "Здесь будут КТП, КМЖ и книги в формате PDF",
+            panelClassesTitle: "Английский язык – 5–9 классы",
+            panelClassesDesc: "Сначала выберите класс, затем откройте нужный документ.",
+            labelClassSelect: "Выберите класс:",
+            optionSelectClass: "-- Выберите класс --",
+            docsEmptyInitial: "Сначала выберите класс.",
+            docsEmptyNoDocs: "Для этого класса документы не найдены.",
+            viewerTitle: "Окно просмотра документа",
+            viewerCaption: "Здесь откроется PDF-документ.",
+            badgePdf: "PDF файл"
+        }
+    };
+
+    let currentLang = "kk";
+
+    const langButtons = document.querySelectorAll(".lang-btn");
+    const siteTitleEl = document.getElementById("siteTitle");
+    const siteSubtitleEl = document.getElementById("siteSubtitle");
+    const panelClassesTitleEl = document.getElementById("panelClassesTitle");
+    const panelClassesDescEl = document.getElementById("panelClassesDesc");
+    const labelClassSelectEl = document.getElementById("labelClassSelect");
+    const optionSelectClassEl = document.getElementById("optionSelectClass");
+    const docsEmptyMessageEl = document.getElementById("docsEmptyMessage");
+    const viewerTitleEl = document.getElementById("viewerTitle");
+    const viewerCaptionEl = document.getElementById("viewerCaption");
+    const classSelectEl = document.getElementById("classSelect");
+    const docsContainerEl = document.getElementById("docsContainer");
+    const docViewerEl = document.getElementById("docViewer");
+
+    function applyLanguage() {
+        const t = i18n[currentLang];
+
+        document.documentElement.lang = currentLang === "kk" ? "kk" : "ru";
+
+        siteTitleEl.textContent = t.siteTitle;
+        siteSubtitleEl.textContent = t.siteSubtitle;
+        panelClassesTitleEl.textContent = t.panelClassesTitle;
+        panelClassesDescEl.textContent = t.panelClassesDesc;
+        labelClassSelectEl.textContent = t.labelClassSelect;
+        optionSelectClassEl.textContent = t.optionSelectClass;
+        viewerTitleEl.textContent = t.viewerTitle;
+        viewerCaptionEl.textContent = t.viewerCaption;
+
+        if (!classSelectEl.value) {
+            docsEmptyMessageEl.textContent = t.docsEmptyInitial;
+        } else if (!docs[classSelectEl.value]) {
+            docsEmptyMessageEl.textContent = t.docsEmptyNoDocs;
+        }
+        classSelectEl.options[1].textContent = currentLang === "kk" ? "5 сынып" : "5 класс";
+        classSelectEl.options[2].textContent = currentLang === "kk" ? "6 сынып" : "6 класс";
+        сlassSelectEl.options[3].textContent = currentLang === "kk" ? "7 сынып" : "7 класс";
+        classSelectEl.options[4].textContent = currentLang === "kk" ? "8 сынып" : "8 класс";
+        сlassSelectEl.options[5].textContent = currentLang === "kk" ? "9 сынып" : "9 класс";
+
+        renderDocsForClass(classSelectEl.value);
+    }
+
+    function renderDocsForClass(classNumber) {
+        docsContainerEl.innerHTML = "";
+
+        if (!classNumber) {
+            docsEmptyMessageEl.style.display = "block";
+            docsEmptyMessageEl.textContent = i18n[currentLang].docsEmptyInitial;
+            return;
+        }
+
+        const classDocs = docs[classNumber];
+        if (!classDocs || classDocs.length === 0) {
+            docsEmptyMessageEl.style.display = "block";
+            docsEmptyMessageEl.textContent = i18n[currentLang].docsEmptyNoDocs;
+            return;
+        }
+
+        docsEmptyMessageEl.style.display = "none";
+
+        classDocs.forEach(doc => {
+            const btn = document.createElement("button");
+            btn.className = "doc-button";
+            btn.type = "button";
+
+            const labelSpan = document.createElement("span");
+            labelSpan.className = "label";
+            labelSpan.textContent = doc.names[currentLang];
+
+            const badgeSpan = document.createElement("span");
+            badgeSpan.className = "doc-badge";
+            badgeSpan.textContent = i18n[currentLang].badgePdf;
+
+            btn.appendChild(labelSpan);
+            btn.appendChild(badgeSpan);
+
+            btn.addEventListener("click", () => {
+                showDoc(doc.url);
             });
-        }
 
-        function showDoc(url) {
-            document.getElementById('docViewer').src = url;
-        }
-    </script>
+            docsContainerEl.appendChild(btn);
+        });
+    }
+
+    function showDoc(url) {
+        docViewerEl.src = url;
+    }
+
+    // Смена языка
+    langButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const lang = btn.getAttribute("data-lang");
+            if (lang === currentLang) return;
+
+            currentLang = lang;
+
+            langButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            applyLanguage();
+        });
+    });
+
+    // Реакция на выбор класса
+    classSelectEl.addEventListener("change", (e) => {
+        const value = e.target.value;
+        renderDocsForClass(value);
+    });
+
+    // Стартовое состояние
+    applyLanguage();
+</script>
 </body>
 </html>
